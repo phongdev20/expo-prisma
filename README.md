@@ -1,50 +1,72 @@
-# Welcome to your Expo app 👋
+# Hướng dẫn khởi tạo và phát triển project Expo + Prisma
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Đây là project mẫu kết hợp giữa [Expo](https://expo.dev) (React Native) và [Prisma](https://www.prisma.io/) để xây dựng ứng dụng di động với backend nhẹ nhàng, dễ mở rộng.
 
-## Get started
+## 1. Yêu cầu hệ thống
+- Node.js >= 18
+- npm >= 9
+- Đã cài đặt [Expo CLI](https://docs.expo.dev/get-started/installation/) (nếu muốn dùng lệnh `expo` toàn cục):  
+  ```bash
+  npm install -g expo-cli
+  ```
 
-1. Install dependencies
+## 2. Cài đặt các phụ thuộc
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-2. Start the app
+## 3. Thiết lập Prisma
 
-   ```bash
-   npx expo start
-   ```
+### a. Cấu hình database
+- Mặc định, cấu hình database nằm trong `prisma/schema.prisma`.
+- Bạn có thể chỉnh sửa datasource (SQLite, PostgreSQL, v.v.) trong file này.
 
-In the output, you'll find options to open the app in a
+### b. Chạy migration để tạo database
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+```bash
+npx prisma migrate dev
+```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### c. Sinh Prisma Client
 
-## Get a fresh project
+Sau khi migrate, Prisma Client sẽ tự động được sinh ra trong `prisma/generated/client/`. Nếu cần, bạn có thể chạy lại:
 
-When you're ready, run:
+```bash
+npx prisma generate
+```
+
+## 4. Khởi động ứng dụng Expo
+
+```bash
+npx expo start
+```
+
+- Quét QR code để mở trên thiết bị thật (Expo Go), hoặc chọn mở trên trình giả lập Android/iOS.
+
+## 5. Sử dụng Prisma trong project
+- Các API backend (ví dụ: `app/api/todo+api.ts`) sẽ import Prisma Client từ `prisma/generated/client`.
+- Bạn có thể viết các endpoint API sử dụng Prisma để thao tác dữ liệu.
+
+## 6. Reset project (tùy chọn)
+
+Để làm mới project về trạng thái ban đầu:
 
 ```bash
 npm run reset-project
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 7. Tài liệu tham khảo
+- [Tài liệu Expo](https://docs.expo.dev/)
+- [Tài liệu Prisma](https://www.prisma.io/docs/)
+- [Hướng dẫn kết nối Prisma với SQLite/Postgres/MySQL](https://www.prisma.io/docs/orm/prisma-schema/data-model)
+- [Cách sử dụng API routes trong Expo Router](https://docs.expo.dev/router/api-routes/)
 
-## Learn more
+## 8. Lưu ý quan trọng
+- Prisma chỉ chạy ở môi trường Node.js (backend). Trong project này, Prisma được dùng ở các route API (server-side) chứ không chạy trực tiếp trên client di động.
+- Nếu thay đổi schema, hãy luôn migrate và generate lại client.
+- Đảm bảo bạn đã cài đặt đúng phiên bản Node.js.
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Nếu bạn cần hướng dẫn chi tiết hơn về một bước cụ thể (ví dụ: viết API với Prisma, deploy, v.v.), hãy liên hệ để được hỗ trợ thêm!
